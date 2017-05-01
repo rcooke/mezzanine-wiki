@@ -36,7 +36,7 @@ def wiki_index(request, template_name='mezawiki/wiki_page_detail.html'):
 def wiki_page_list(request, tag=None, username=None,
                    category=None, template="mezawiki/wiki_page_list.html"):
     """
-    Display a list of wiki pages that are filtered by tag, 
+    Display a list of wiki pages that are filtered by tag,
     author or category.
 
     Custom templates are checked for using the name
@@ -106,7 +106,7 @@ def wiki_page_list(request, tag=None, username=None,
     context = {"wiki_pages": wiki_pages,
                "tag": tag, "category": category, "author": author}
     templates.append(template)
-    return render(request, templates, context)
+    return render(request, templates, context_instance=context)
 
 
 def wiki_page_detail(request, slug, year=None, month=None,
@@ -140,7 +140,7 @@ def wiki_page_detail(request, slug, year=None, month=None,
                 _("You don't have permission to add new wiki page."))
     context = {"wiki_page": wiki_page}
     templates = [u"mezawiki/wiki_page_detail_%s.html" % unicode(slug), template]
-    return render(request, templates, context)
+    return render(request, templates, context_instance=context)
 
 
 def wiki_page_history(request, slug,
@@ -170,7 +170,7 @@ def wiki_page_history(request, slug,
             _("You don't have permission to view this wiki page."))
     context = {"wiki_page": wiki_page, "revisions": revisions}
     templates = [u"mezawiki/wiki_page_history_%s.html" % unicode(slug), template]
-    return render(request, templates, context)
+    return render(request, templates, context_instance=context)
 
 
 def wiki_page_revision(request, slug, rev_id,
@@ -200,7 +200,7 @@ def wiki_page_revision(request, slug, rev_id,
             _("You don't have permission to view this wiki page revision."))
     context = {"wiki_page": wiki_page, "revision": revision}
     templates = [u"mezawiki/wiki_page_detail_%s.html" % unicode(slug), template]
-    return render(request, templates, context)
+    return render(request, templates, context_instance=context)
 
 
 def wiki_page_diff(request, slug,
@@ -217,16 +217,16 @@ def wiki_page_diff(request, slug,
     except WikiPage.DoesNotExist:
         return HttpResponseRedirect(reverse('wiki_page_edit', args=[slug]))
     try:
-        from_rev = wiki_page.wikipagerevision_set.get(pk=request.REQUEST['from_revision_pk'])
-        to_rev = wiki_page.wikipagerevision_set.get(pk=request.REQUEST['to_revision_pk'])
+        from_rev = wiki_page.wikipagerevision_set.get(pk=request.GET['from_revision_pk'])
+        to_rev = wiki_page.wikipagerevision_set.get(pk=request.GET['to_revision_pk'])
     except (KeyError, WikiPage.DoesNotExist):
         return HttpResponseNotFound()
     dmp = diff_match_patch()
     diff = dmp.diff_compute(from_rev.content, to_rev.content, True, 2)
     undo_error = False
-    if 'undo' in request.REQUEST and request.REQUEST['undo'] == 'error':
+    if 'undo' in request.POST and request.POST['undo'] == 'error':
         undo_error = True
-    return render(request, 'mezawiki/wiki_page_diff.html',
+    return render(request, 'mezawiki/wiki_page_diff.html', context_instance=
                   {'wiki_page': wiki_page, 'from_revision': from_rev, 'to_revision': to_rev, 'diff': diff, 'undo_error': undo_error})
 
 
@@ -262,7 +262,7 @@ def wiki_page_revert(request, slug, revision_pk):
                     {'time': src_revision.created}
         form = WikiPageForm(data=request.POST or None, instance=wiki_page,
                 initial={'content': src_revision.content, 'summary': description})
-    return render(request, 'mezawiki/wiki_page_edit.html',
+    return render(request, 'mezawiki/wiki_page_edit.html', context_instance=
                   {'wiki_page': wiki_page, 'form': form, 'src_revision': src_revision})
 
 
@@ -316,10 +316,10 @@ def wiki_page_undo(request, slug, revision_pk):
                     urlencode(urldata)))
         form = WikiPageForm(data=request.POST or None, instance=wiki_page,
                 initial={'content': content, 'summary': description})
-    return render(request, 'mezawiki/wiki_page_edit.html', {'wiki_page': wiki_page, 'form': form})
+    return render(request, 'mezawiki/wiki_page_edit.html', context_instance= {'wiki_page': wiki_page, 'form': form})
 
 
-def wiki_page_changes(request, 
+def wiki_page_changes(request,
                      template="mezawiki/wiki_page_changes.html"):
     """
     Displays a recent wiki changes.
@@ -327,10 +327,10 @@ def wiki_page_changes(request,
     wiki_pages = WikiPage.objects.published(for_user=request.user)
     wiki_revisions = WikiPageRevision.objects.filter(page__in=wiki_pages)
     context = {"wiki_revisions": wiki_revisions}
-    return render(request, template, context)
+    return render(request, template, context_instance=context)
 
 
-def wiki_page_edit(request, slug, 
+def wiki_page_edit(request, slug,
                      template="mezawiki/wiki_page_edit.html"):
     """
     Displays the form for editing a page.
@@ -378,7 +378,7 @@ def wiki_page_edit(request, slug,
 
     context = {'wiki_page': wiki_page, 'form': form,
                'title': deurlize_title(slug)}
-    return render(request, template, context)
+    return render(request, template, context_instance=context)
 
 
 def can_add_wikipage(user):
@@ -442,6 +442,4 @@ def wiki_page_new(request, template="mezawiki/wiki_page_new.html"):
         form = WikiPageForm(initial={'status': 1})
 
     context = {'form': form}
-    return render(request, template, context)
-
-
+    return render(request, template, context_instance=context)
