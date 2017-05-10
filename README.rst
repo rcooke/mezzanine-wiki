@@ -50,9 +50,9 @@ Quick start
 6. Restart the server.
 
 7. At this stage, you can visit the /wiki/ url, but it will give you a
-"You don't have permission to add new wiki pages." It helps if you
-create a mock web page first (using the admin panel), and then visit
-/wiki/ to set up a default Main page.
+   "You don't have permission to add new wiki pages." It helps if you
+   create a mock web page first (using the admin panel), and then visit
+   /wiki/ to set up a default Main page.
 
 8. Finally, add a new Rich Text Page with the name "Wiki". This will add
-the wiki to the menu.
+   the wiki to the menu.
