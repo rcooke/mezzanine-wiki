@@ -3,3 +3,7 @@ Version 0.1 (May 24, 2012)
 
   * Start app - dfalk
 
+Version 0.2 (May 10, 2017)
+--------------------------
+
+  * Updated for Django beyond 1.7

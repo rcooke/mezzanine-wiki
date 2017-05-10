@@ -2,60 +2,57 @@
 Overview
 ========
 
-Wiki application for Mezzanine.
-
-Features:
+This is a wiki application for `Mezzanine
+<http://mezzanine.jupo.org/>`_, a content management platform using
+the Django framework. Its features are:
 
 - markdown syntax with [[Wiki links]] extension
 - page history and diff viewing
 
-Requirements:
+Its current requirements are:
 
-- mezzanine >= 3.1
+- mezzanine >= 4.0
 - markdown
 - diff-match-patch
-- south
 
+Its former requirements are:
 
-=========
-Mezzanine
-=========
-
-Mezzanine is a content management platform built using the Django
-framework. It is BSD licensed and designed to provide both a
-consistent interface for managing content, and a simple, extensible
-architecture that makes diving in and hacking on the code as easy as
-possible.
-
-Visit the Mezzanine project page to see some of the great sites
-people have built using Mezzanine.
-
-http://mezzanine.jupo.org
-
-http://github.com/stephenmcd/mezzanine
-
+- south (now deprecated as of Django>=1.7)
 
 ===========
 Quick start
 ===========
 
-1. Add "mezzanine_wiki" to your INSTALLED_APPS setting like this::
+1. Download or clone and run:
+
+    python setup.py install
+
+2. Add "mezzanine_wiki" to your INSTALLED_APPS setting like this::
 
     INSTALLED_APPS = (
         ...
         'mezzanine_wiki',
     )
-    
-2. Add "mezzanine_wiki.WikiPage" to SEARCH_MODEL_CHOICES setting like this:
+
+3. Run the following code to create the models:
+
+   python manage.py makemigrations mezzanine_wiki
+   python manage.py migrate
+
+4. Include the wiki URLconf in your project urls.py like this::
+
+   url(r'^wiki/', include('mezzanine_wiki.urls')),
+
+5. Add "mezzanine_wiki.WikiPage" to SEARCH_MODEL_CHOICES setting like this:
 
     SEARCH_MODEL_CHOICES = ('pages.Page', 'blog.BlogPost', 'mezzanine_wiki.WikiPage')
 
-3. Include the wiki URLconf in your project urls.py like this::
+6. Restart the server.
 
-    url(r'^wiki/', include('mezzanine_wiki.urls')),
+7. At this stage, you can visit the /wiki/ url, but it will give you a
+"You don't have permission to add new wiki pages." It helps if you
+create a mock web page first (using the admin panel), and then visit
+/wiki/ to set up a default Main page.
 
-4. Run `python manage.py migrate` to create the wiki models.
-
-5. Restart server.
-
-6. Visit /wiki/ to use the wiki. 
+8. Finally, add a new Rich Text Page with the name "Wiki". This will add
+the wiki to the menu.
