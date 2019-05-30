@@ -1,7 +1,6 @@
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from markdown import markdown
 from mezzanine_wiki.mdx_wikilinks_extra import WikiLinkExtraExtension
-
 
 def md_plain(content):
     """
@@ -18,5 +17,5 @@ def md_wikilinks(content):
     base_url = reverse('wiki_index')
     configs = {'base_url': base_url}
     wikilinks_extra = WikiLinkExtraExtension(configs=configs)
-    return markdown(content,[wikilinks_extra])
+    return markdown(content,kwargs=wikilinks_extra)
 

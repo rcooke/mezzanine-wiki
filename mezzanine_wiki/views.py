@@ -53,7 +53,7 @@ def wiki_page_list(request, tag=None, username=None,
         category = get_object_or_404(WikiCategory, slug=category)
         wiki_pages = wiki_pages.filter(categories=category)
         templates.append(u"mezawiki/wiki_post_list_%s.html" %
-                          unicode(category.slug))
+                          str(category.slug))
     author = None
     if username is not None:
         author = get_object_or_404(User, username=username)
@@ -139,7 +139,7 @@ def wiki_page_detail(request, slug, year=None, month=None,
             return HttpResponseForbidden(
                 _("You don't have permission to add new wiki page."))
     context = {"wiki_page": wiki_page}
-    templates = [u"mezawiki/wiki_page_detail_%s.html" % unicode(slug), template]
+    templates = [u"mezawiki/wiki_page_detail_%s.html" % str(slug), template]
     return render(request, templates, context_instance=context)
 
 
@@ -169,7 +169,7 @@ def wiki_page_history(request, slug,
         return HttpResponseForbidden(
             _("You don't have permission to view this wiki page."))
     context = {"wiki_page": wiki_page, "revisions": revisions}
-    templates = [u"mezawiki/wiki_page_history_%s.html" % unicode(slug), template]
+    templates = [u"mezawiki/wiki_page_history_%s.html" % str(slug), template]
     return render(request, templates, context_instance=context)
 
 
@@ -199,7 +199,7 @@ def wiki_page_revision(request, slug, rev_id,
         return HttpResponseForbidden(
             _("You don't have permission to view this wiki page revision."))
     context = {"wiki_page": wiki_page, "revision": revision}
-    templates = [u"mezawiki/wiki_page_detail_%s.html" % unicode(slug), template]
+    templates = [u"mezawiki/wiki_page_detail_%s.html" % str(slug), template]
     return render(request, templates, context_instance=context)
 
 
@@ -244,7 +244,7 @@ def wiki_page_revert(request, slug, revision_pk):
         return HttpResponseRedirect(reverse('wiki_page_edit', args=[slug]))
     src_revision = get_object_or_404(WikiPageRevision, page=wiki_page, pk=revision_pk)
     new_revision = WikiPageRevision(page=wiki_page,
-            user=request.user if request.user.is_authenticated() else User.objects.get(id=-1))
+            user=request.user if request.user.is_authenticated else User.objects.get(id=-1))
     if request.method == 'POST':
         form = WikiPageForm(data=request.POST or None, instance=wiki_page)
         if form.is_valid():
@@ -280,7 +280,7 @@ def wiki_page_undo(request, slug, revision_pk):
         return HttpResponseRedirect(reverse('wiki_page_edit', args=[slug]))
     src_revision = get_object_or_404(WikiPageRevision, page=wiki_page, pk=revision_pk)
     new_revision = WikiPageRevision(page=wiki_page,
-            user=request.user if request.user.is_authenticated() else User.objects.get(id=-1))
+            user=request.user if request.user.is_authenticated else User.objects.get(id=-1))
     if request.method == 'POST':
         form = WikiPageForm(data=request.POST or None, instance=wiki_page)
         if form.is_valid():

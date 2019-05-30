@@ -23,5 +23,5 @@ class WikiPageForm(forms.ModelForm):
         super(WikiPageForm, self).__init__(*args, **kwargs)
         self.fields['content'].widget.attrs['class'] = 'wiki-textarea'
         # Hide title for existing page
-        if kwargs.has_key('instance'):
+        if 'instance' in kwargs:
             del self.fields["title"]

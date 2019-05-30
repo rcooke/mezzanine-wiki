@@ -13,7 +13,6 @@ from mezzanine_wiki import defaults as wiki_settings
 from django.utils.timezone import now
 from mezzanine_wiki.managers import DisplayableManager
 
-
 WIKIPAGE_PERMISSIONS = (
     ('view_wikipage', 'Can view wikipage'),
     ('change_wikipage_privacy', 'Can change wikipage privacy'),
@@ -56,14 +55,12 @@ class WikiPage(Displayable, Ownable):
 
     def can_edit_wikipage(self, user):
         # Simple cases first, we don't want to waste CPU and DB hits.
-
         # Everyone.
         if (settings.WIKI_PRIVACY == wiki_settings.WIKI_PRIVACY_OPENED):
             return True
 
         # Registered users.
-        elif (settings.WIKI_PRIVACY == wiki_settings.WIKI_PRIVACY_REGISTERED
-                                              ) and (user.is_authenticated()):
+        elif ((settings.WIKI_PRIVACY == wiki_settings.WIKI_PRIVACY_REGISTERED) and (user.is_authenticated)):
             return True
 
         # TODO: Checks done by guardian for owner and admins.
