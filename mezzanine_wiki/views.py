@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from django import VERSION
@@ -20,7 +20,7 @@ from mezzanine_wiki.forms import WikiPageForm
 from mezzanine_wiki.utils import urlize_title, deurlize_title
 from mezzanine_wiki import defaults as wiki_settings
 from diff_match_patch import diff_match_patch
-from urllib import urlencode, quote
+from urllib.parse import urlencode, quote
 
 
 def wiki_index(request, template_name='mezawiki/wiki_page_detail.html'):

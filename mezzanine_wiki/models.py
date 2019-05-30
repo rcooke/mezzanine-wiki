@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
@@ -88,7 +88,7 @@ class WikiPageRevision(Ownable, TimeStamped):
     A wiki page revision.
     """
 
-    page = models.ForeignKey("WikiPage", verbose_name=_("Wiki page"))
+    page = models.ForeignKey("WikiPage", on_delete=models.CASCADE,verbose_name=_("Wiki page"))
     content = WikiTextField(_("Content"))
     description = models.CharField(_("Description"),
                                    max_length=400, blank=True)
