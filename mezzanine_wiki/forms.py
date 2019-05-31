@@ -20,10 +20,7 @@ class WikiPageForm(forms.ModelForm):
         fields = ('title', 'content', 'summary', 'status',)+ hidden_field_defaults
 
     def __init__(self, *args, **kwargs):
-        initial = {}
-        for field in hidden_field_defaults:
-            initial[field] = WikiPage._meta.get_field(field).default
-        initial["status"] = CONTENT_STATUS_DRAFT
-        super(WikiPageForm, self).__init__(initial=initial)
-        for field in hidden_field_defaults:
-            self.fields[field].widget = forms.HiddenInput()
+        super(WikiPageForm, self).__init__(*args, **kwargs)
+        # Hide title for existing page
+        if 'instance' in kwargs:
+            del self.fields["title"]

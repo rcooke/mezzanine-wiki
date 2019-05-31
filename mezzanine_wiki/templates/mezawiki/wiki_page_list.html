@@ -76,13 +76,6 @@
 {% endeditable %}
 {% endblock %}
 {% endfor %}
-<ul style="unstyled">
-{% for wiki_page in wiki_pages.object_list %}
-<li>
-    <a href="{{ wiki_page.get_absolute_url }}">{{ wiki_page.title }}</a>
-</li>
-{% endfor %}
-</ul>
 
 {% pagination_for wiki_pages %}
 
