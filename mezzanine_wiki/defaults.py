@@ -37,7 +37,7 @@ register_setting(
     name="WIKI_TEXT_WIDGET_CLASS",
     description=_("Wiki text widget class"),
     editable=False,
-    default="mezzanine_wiki.forms.PlainWidget",
+    default="mezzanine.core.forms.TinyMceWidget",
 )
 
 WIKI_PRIVACY_OPENED = 1
