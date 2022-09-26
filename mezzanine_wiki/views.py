@@ -10,7 +10,7 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from django import VERSION
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from mezzanine_wiki.models import WikiPage, WikiCategory, WikiPageRevision
 from mezzanine.conf import settings

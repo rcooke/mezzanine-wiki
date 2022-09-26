@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib.admin.widgets import AdminTextareaWidget
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from mezzanine.utils.importing import import_dotted_path
 
